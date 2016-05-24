@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8" />
+        <meta name="format-detection" content="telephone=no" />
+        <meta name="msapplication-tap-highlight" content="no" />
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
+        <link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css"  href="css/jquery.mobile-1.4.5.css">
+		   <link rel="stylesheet" type="text/css"  href="css/jquery.mobile.theme-1.4.5.css">
+		   <link rel="stylesheet" type="text/css"  href="css/temafsc_3.css">
+		   <link rel="stylesheet"  type="text/css" href="css/jquery.mobile.external-png-1.4.5.css">
+		   <link rel="stylesheet" type="text/css"  href="css/jquery.mobile.icons-1.4.5.css">
+		   <link rel="stylesheet" type="text/css"  href="css/jquery.mobile.inline-png-1.4.5.css"> 
+		   <link rel="stylesheet" type="text/css"  href="css/jquery.mobile.structure-1.4.5.css">
+        <title>Bot&oacute;n de Panico</title>
+        <script src="http://maps.google.com/maps/api/js?sensor=true"></script>
+        <script type="text/javascript">
+var x=document.getElementById("demo");
+function cargarmap(){
+	valores();
+navigator.geolocation.getCurrentPosition(showPosition,showError);
+function showPosition(position)
+  {
+  lat=position.coords.latitude;
+  lon=position.coords.longitude;
+  document.getElementById("latitud").value=lat;
+  document.getElementById("longitud").value=lon;
+  latlon=new google.maps.LatLng(lat, lon)
+  mapholder=document.getElementById('mapholder')
+  mapholder.style.height='250px';
+  mapholder.style.width='500px';
+  var myOptions={
+  center:latlon,zoom:14,
+  mapTypeId:google.maps.MapTypeId.ROADMAP,
+  mapTypeControl:false,
+  navigationControlOptions:{style:google.maps.NavigationControlStyle.SMALL}
+  };
+  var map=new google.maps.Map(document.getElementById("mapholder"),myOptions);
+  var marker=new google.maps.Marker({position:latlon,map:map,title:"Esta es mi Ubicacion!"});
+  }
+function showError(error)
+  {
+  switch(error.code) 
+    {
+    case error.PERMISSION_DENIED:
+      x.innerHTML="Denegada la peticion de Geolocalización en el navegador."
+      break;
+    case error.POSITION_UNAVAILABLE:
+      x.innerHTML="La información de la localización no esta disponible."
+      break;
+    case error.TIMEOUT:
+      x.innerHTML="El tiempo de petición ha expirado."
+      break;
+    case error.UNKNOWN_ERROR:
+      x.innerHTML="Ha ocurrido un error desconocido."
+      break;
+    }
+  }}
+  // funcion para enviar informacion
+  
+   function Enviar_Informacion(valor){
+	   	window.location="http://190.117.115.217/jmobile/formato_alerta.php?codigo="+valor;
+	   
+	   }
+ function loadx(valor){
+	 var lati =document.getElementById("latitud").value;
+	 var longi=document.getElementById("longitud").value;	 
+	 var doc=document.getElementById("dni").value;
+	 document.getElementById("load").src="http://190.117.115.217/mobile/formato_alerta.php?codigo="+valor+'&latitud='+lati+'&longitud='+longi+'&dni='+doc;
+	 }
+function editar(){
+	 var docx=document.getElementById("dni").value;
+	 document.getElementById("load").src="http://190.117.115.217/mobile/editar.php?dni="+docx;
+	}	 
+</script>
+<script type="text/javascript">
+function valores(){
+var paramstr = window.location.search.substr(1);
+var paramarr = paramstr.split ("&");
+var params = {};
+
+for ( var i = 0; i < paramarr.length; i++) {
+var tmparr = paramarr[i].split("=");
+params[tmparr[0]] = tmparr[1];
+}
+if (params['user']) {
+console.log('El valor del parámetro variable es: '+params['user']);
+var username=params['user'];
+var usser= atob(username);
+var dnix= usser.split("-");
+document.getElementById("dni").value=dnix[1];
+
+//alert(params['user']);
+//var res = username.split("%20");
+//document.getElementById("user").value=atob(username);
+document.getElementById("name").innerHTML ='<img src="img/check.png"> '+ atob(username);
+} else {
+console.log('No se envió el parámetro variable');
+}
+}
+</script>
+    </head>
+    <body onLoad="cargarmap();">
+    <input type="hidden" id="user" name="user" style="border:0px solid #FFFFFF;" readonly>
+   <input type="hidden" id="latitud" name="latitud">
+   <input type="hidden" id="longitud" name="longitud">
+   <input type="hidden" id="dni" name="dni">
+	 <button  data-icon="arrow-r" style="background-color:#C8080E;color:#DFDFDF;"> SELECCIONE CATEGOR&Iacute;A  </button>
+      <div style="color:#C32626;font-weight:bold;font-size:12px;" align="center">Bienvenido:</div><div id="name" align="center" style="color:#1D80E8;font-weight:bold;font-size:12px;"></div>
+      <center>
+     <a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="editar();"> <div style="color:#329316;font-weight:bold;font-size:10px;cursor:pointer;" align="center" >Actualizar Perfil</div></a>
+     </center>
+    <br>
+    <br>
+   				
+<div data-role="content" id="" data-theme="a" >
+ 		<table border="0" align="center">
+        	<tr>
+            	<td> <a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00001');"><img src="img/drogas.png" width="100" height="103" ></a></td>
+               	<td><a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00002');"><img src="img/robo.png" width="100" height="103"></a></td>
+               	<td><a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00003');"><img src="img/pandillaje.png" width="100" height="103"></a></td>
+            </tr>
+            <tr>
+               	<td><a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00004');"><img src="img/violencia.png" width="100" height="103" ></a></td>
+               	<td><a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00005');"><img src="img/sospechoso.png"width="100" height="103" ></a></td>
+			   	<td><a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00006');"><img src="img/robo_casa.png" width="100" height="103" ></a></td>                
+            </tr>
+            <tr>
+            	<td> <a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00007');"><img src="img/robo_vehicular.png" width="100" height="103" ></a></td>
+                <td> <a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00008');"><img src="img/emergencia.png"  width="100" height="103"></a></td>
+                <td> <a href="#popupVideo" data-rel="popup" data-position-to="window" data-role="button" data-theme="a" data-inline="true" onClick="loadx('00009');"><img src="img/otros.png" width="100" height="103" ></a></td>
+            </tr>
+        </table>
+ 	 <center>
+      <div id="demo" ></div>
+	  <div id="mapholder" ></div>
+    </center>
+</div>
+<div data-role="footer" data-theme="c" data-position="fixed"  >
+   <div data-role="navbar" style="border:0px;" >
+     <ul>
+       <li><a  data-icon="refresh" onClick="regresar_inicio();" style="background-color:#0e70d8;color:#DFDFDF;" >Cerrar Sesi&oacute;n</a></li>     
+     </ul>
+   </div>
+  </div>
+  <br>
+ 
+<div data-role="popup" id="popupVideo" data-overlay-theme="a" data-theme="d" data-tolerance="15,15" class="ui-content">
+
+    <iframe  frameborder="0" id="load" width="497" height="498" seamless></iframe>
+	 
+</div>
+
+  <script>
+    function regresar_inicio(){
+	  window.location="index.html";
+	  } 
+  </script>
+  <script type="text/javascript" src="js/jquery-2.1.3.min.js"></script>		
+
+       <script type="text/javascript" src="js/jquery.mobile-1.4.5.js"></script>		
+       <script type="text/javascript" src="cordova.js"></script>
+       <script type="text/javascript" src="js/index.js"></script>
+       <script type="text/javascript">
+            app.initialize();
+       </script>
+    </body>
+</html>

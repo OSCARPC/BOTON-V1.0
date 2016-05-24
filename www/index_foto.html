@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width">
+        <title>Subir imagen</title>
+        <script>
+            function hacerFoto(){
+                navigator.camera.getPicture(onSuccess, onFail, { quality: 50, destinationType: Camera.DestinationType.FILE_URI });
+            }
+            
+            function onSuccess(imageURI) {
+                var image = document.getElementById('fotoLocal');
+                image.src = imageURI;
+                subirImagen(imageURI)                             
+            }
+        
+            function onFail(message) {
+                alert('Failed because: ' + message);
+            }
+            
+            function subirImagen(fileURL) {
+            
+                var options = new FileUploadOptions();
+                options.fileKey = "imagen";
+                options.fileName = fileURL.substr(fileURL.lastIndexOf('/') + 1);
+
+                var ft = new FileTransfer();
+                ft.upload(fileURL, encodeURI("http://190.117.115.217/foto/foto.php"), uploadSuccess, uploadFail, options);
+            }
+
+            function uploadSuccess(r) {
+                alert("Code = " + r.responseCode+" Response = " + r.response+" Sent = " + r.bytesSent);
+                var image = document.getElementById('fotoServidor');
+                image.src = r.response;
+            }
+
+            function uploadFail(error) {
+                alert("An error has occurred: Code = " + error.code+ " upload error source " + error.source+" upload error target " + error.target);
+            }
+                                        
+        </script>
+    </head>
+    <body>
+        <div class="app">
+            <h1>Apache Cordova</h1>
+            <input type="button" onclick="hacerFoto();"  value="Hacer Foto">
+            <img id="fotoLocal" src="" width="100px" height="100px">
+            <img id="fotoServidor" src="" width="100px" height="100px">
+        </div>
+        <script type="text/javascript" src="cordova.js"></script>
+    </body>
+</html>
